@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyApp.Domain.Interfaces;
 using MyApp.Infrastructure.Data;
+using System.Linq.Expressions;
 
 namespace MyApp.Infrastructure.Repositories
 {
@@ -18,7 +19,7 @@ namespace MyApp.Infrastructure.Repositories
             return _dbContext.Set<T>().AsNoTracking();
         }
 
-        public IQueryable<T> FindByCondition(System.Linq.Expressions.Expression<Func<T, bool>> expression)
+        public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
             return _dbContext.Set<T>().Where(expression).AsNoTracking();
         }
