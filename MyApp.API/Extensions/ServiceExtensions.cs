@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MyApp.Domain.Interfaces;
 using MyApp.Infrastructure.Data;
+using MyApp.Infrastructure.Repositories;
 
 namespace MyApp.API.Extensions
 {
@@ -30,6 +32,11 @@ namespace MyApp.API.Extensions
                 // 設定遷移元件
                 builder.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
+        }
+
+        public static void ConfigureRepositoryWrapper(this IServiceCollection services)
+        {
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
         }
     }
 }

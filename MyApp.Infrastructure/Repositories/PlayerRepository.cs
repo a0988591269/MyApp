@@ -1,4 +1,5 @@
-﻿using MyApp.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using MyApp.Domain.Entities;
 using MyApp.Domain.Interfaces;
 using MyApp.Infrastructure.Data;
 
@@ -13,5 +14,10 @@ namespace MyApp.Infrastructure.Repositories
         /// </summary>
         /// <param name="dbContext"></param>
         public PlayerRepository(_DbContext dbContext) : base(dbContext) { }
+
+        public async Task<List<Player>> GetAllPlayers()
+        {
+            return await FindAll().OrderBy(player => player.CreatedDate).ToListAsync();
+        }
     }
 }

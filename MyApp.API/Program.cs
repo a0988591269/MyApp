@@ -1,3 +1,5 @@
+using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using MyApp.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,8 @@ builder.Services.AddSwaggerGen();
 #region 自定義服務
 builder.Services.ConfigureCors();
 builder.Services.ConfigureContext(builder.Configuration);
+builder.Services.ConfigureRepositoryWrapper();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 #endregion
 
 var app = builder.Build();
