@@ -2,6 +2,9 @@
 using MyApp.Domain.Entities;
 using MyApp.Domain.Interfaces;
 using MyApp.Infrastructure.Data;
+using MyApp.Shared.RequestParameters;
+using System.Data.Common;
+using System.Reflection.Metadata;
 
 namespace MyApp.Infrastructure.Repositories
 {
@@ -17,9 +20,13 @@ namespace MyApp.Infrastructure.Repositories
         {
         }
 
-        public async Task<List<Player>> GetAllPlayers()
+        public async Task<List<Player>> GetPlayers(PlayerParameter parameter)
         {
-            return await FindAll().OrderBy(player => player.CreatedDate).ToListAsync();
+            return await FindAll()
+                .OrderBy(player => player.CreatedDate)
+                .Skip((parameter.PageNumber - 1) * parameter.PageSize)
+                .Take(parameter.PageSize)
+                .ToListAsync();
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using MyApp.Application.DTOs;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Interfaces;
+using MyApp.Shared.RequestParameters;
 
 namespace MyApp.API.Controllers
 {
@@ -23,11 +24,11 @@ namespace MyApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPlayers()
+        public async Task<IActionResult> GetAllPlayers([FromQuery] PlayerParameter parameter)
         {
             try
             {
-                var players = await _repository.Player.GetAllPlayers();
+                var players = await _repository.Player.GetPlayers(parameter);
                 var result = _mapper.Map<IEnumerable<PlayerDto>>(players);
                 return Ok(result);
             }
