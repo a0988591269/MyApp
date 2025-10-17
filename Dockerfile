@@ -4,7 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
+EXPOSE 5001
 
 
 # 此階段是用來組建服務專案
@@ -12,6 +12,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["MyApp.API/MyApp.API.csproj", "MyApp.API/"]
+COPY ["MyApp.Application/MyApp.Application.csproj", "MyApp.Application/"]
+COPY ["MyApp.Domain/MyApp.Domain.csproj", "MyApp.Domain/"]
+COPY ["MyApp.Shared/MyApp.Shared.csproj", "MyApp.Shared/"]
+COPY ["MyApp.Infrastructure/MyApp.Infrastructure.csproj", "MyApp.Infrastructure/"]
 RUN dotnet restore "./MyApp.API/MyApp.API.csproj"
 COPY . .
 WORKDIR "/src/MyApp.API"

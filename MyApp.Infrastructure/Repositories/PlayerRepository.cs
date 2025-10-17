@@ -5,6 +5,7 @@ using MyApp.Infrastructure.Data;
 using MyApp.Shared.RequestParameters;
 using System.Data.Common;
 using System.Reflection.Metadata;
+using MyApp.Shared.ResponseType;
 
 namespace MyApp.Infrastructure.Repositories
 {
@@ -20,13 +21,11 @@ namespace MyApp.Infrastructure.Repositories
         {
         }
 
-        public async Task<List<Player>> GetPlayers(PlayerParameter parameter)
+        public PageList<Player> GetPlayers(PlayerParameter parameter)
         {
-            return await FindAll()
+            return FindAll()
                 .OrderBy(player => player.CreatedDate)
-                .Skip((parameter.PageNumber - 1) * parameter.PageSize)
-                .Take(parameter.PageSize)
-                .ToListAsync();
+                .ToPageList(parameter.PageNumber, parameter.PageSize);
         }
 
         /// <summary>

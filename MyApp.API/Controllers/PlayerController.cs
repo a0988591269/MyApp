@@ -5,6 +5,7 @@ using MyApp.Application.DTOs;
 using MyApp.Domain.Entities;
 using MyApp.Domain.Interfaces;
 using MyApp.Shared.RequestParameters;
+using Newtonsoft.Json;
 
 namespace MyApp.API.Controllers
 {
@@ -24,11 +25,12 @@ namespace MyApp.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPlayers([FromQuery] PlayerParameter parameter)
+        public IActionResult GetPlayers([FromQuery] PlayerParameter parameter)
         {
             try
             {
-                var players = await _repository.Player.GetPlayers(parameter);
+                var players = _repository.Player.GetPlayers(parameter);
+                Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(players.MetaData));
                 var result = _mapper.Map<IEnumerable<PlayerDto>>(players);
                 return Ok(result);
             }
